@@ -36,12 +36,11 @@ const AccountProfile = ({ user, btnTitle}: Props) => {
     const form = useForm({
         resolver: zodResolver(userValidation),
         defaultValues: {
-        profile_photo: '',
-        name: '',
-        username: '',
-        bio: ''
+        profile_photo: user?.image || '',
+        name: user?.name || '',
+        username: user?.username || '',
+        bio: user?.bio || ''
     }
-
   })
    // 2. Define a submit handler.
    function onSubmit(values: z.infer<typeof userValidation>) {
