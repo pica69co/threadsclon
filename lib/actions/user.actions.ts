@@ -1,6 +1,6 @@
 'use server'
 
-import { revalidatePath } from "next/cache"
+import { revalidatePath } from "next/cache";
 import User from "../models/user.model"
 import { connectDb } from "../mongoose"
 

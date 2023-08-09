@@ -12,7 +12,7 @@ import {
      } from "../ui/form";
 import * as z from "zod"
 import { zodResolver } from '@hookform/resolvers/zod'
-import { userValidation } from "@/lib/validations/user";
+import { UserValidation } from "@/lib/validations/user";
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
 import { Textarea } from "../ui/textarea"
@@ -36,22 +36,24 @@ interface Props {
 }
 
 const AccountProfile = ({ user, btnTitle}: Props) => {
-    const [files, setFiles] = useState<File[]>([])
-    const { startUpload } = useUploadThing("media")
+    
     const router = useRouter()
     const pathname = usePathname()
+    const { startUpload } = useUploadThing("media")
+    
+    const [files, setFiles] = useState<File[]>([])
 
-    const form = useForm({
-        resolver: zodResolver(userValidation),
-        defaultValues: {
-        profile_photo: user?.image || '',
-        name: user?.name || '',
-        username: user?.username || '',
-        bio: user?.bio || ''
-    }
-  })
+    const form = useForm<z.infer<typeof UserValidation>>({
+    resolver: zodResolver(UserValidation),
+    defaultValues: {
+      profile_photo: user?.image ? user.image : "",
+      name: user?.name ? user.name : "",
+      username: user?.username ? user.username : "",
+      bio: user?.bio ? user.bio : "",
+    },
+  });
    // 2. Define a submit handler.
-   async function onSubmit(values: z.infer<typeof userValidation>) {
+   async function onSubmit(values: z.infer<typeof UserValidation>) {
     // Do something with the form values.
     // ✅ This will be type-safe and validated.
     const blob = values.profile_photo
@@ -65,32 +67,33 @@ const AccountProfile = ({ user, btnTitle}: Props) => {
       }
     }
     // Todo: Update user profile
-    await updateUser(
-      {
-        userId: user.id,
-        username: values.username,
-        name: values.name,
-        bio: values.bio,
-        image: values.profile_photo,
-        path: pathname
-      }
-    )
-    if(pathname === 'profile/edit') {
-      router.back()
+    await updateUser({
+      name: values.name,
+      path: pathname,
+      username: values.username,
+      userId: user.id,
+      bio: values.bio,
+      image: values.profile_photo,
+    });
 
-    }else {
-      router.push('/')
+    if (pathname === "/profile/edit") {
+      router.back();
+    } else {
+      router.push("/");
     }
     // console.log(values)
   }
 
-  const handleImage = (e: ChangeEvent<HTMLInputElement>, fieldChange: (value: string)=> void) => {
-    e.preventDefault()
+  const handleImage = (
+    e: ChangeEvent<HTMLInputElement>,
+    fieldChange: (value: string) => void) => {
+      e.preventDefault()
 
-    const fileReader = new FileReader()
-    if(e.target.files && e.target.files.length > 0){
+      const fileReader = new FileReader()
+     if (e.target.files && e.target.files.length > 0){
       const file = e.target.files[0]
       setFiles(Array.from(e.target.files))
+      
       if(!file.type.includes('image')) return
 
       fileReader.onload = async (event) => {
@@ -99,8 +102,7 @@ const AccountProfile = ({ user, btnTitle}: Props) => {
       }
       fileReader.readAsDataURL(file)
     }
-
-  }
+    }
   
     return (
         <Form {...form}>
