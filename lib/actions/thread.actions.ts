@@ -50,10 +50,10 @@ export async function fetchPosts(pageNumber = 1, pageSize = 20) {
         path: "author",
         model: User,
       })
-    //   .populate({
-    //     path: "community",
-    //     model: Community,
-    //   })
+       .populate({
+         path: "community",
+         model: Community,
+       })
       .populate({
         path: "children", // Populate the children field
         populate: {
@@ -66,7 +66,8 @@ export async function fetchPosts(pageNumber = 1, pageSize = 20) {
     // Count the total number of top-level posts (threads) i.e., threads that are not comments.
     const totalPostsCount = await Thread.countDocuments({
       parentId: { $in: [null, undefined] },
-    }); // Get the total count of posts
+    }); 
+    // Get the total count of posts
   
     const posts = await postsQuery.exec();
   
@@ -74,3 +75,40 @@ export async function fetchPosts(pageNumber = 1, pageSize = 20) {
   
     return { posts, isNext };
   }
+
+export async function fetchThreadById(id: string) {
+  connectDb()
+
+  try {
+    // Todo: populate Community
+    const thread = await Thread.findById(id)
+    .populate({
+      path: 'author',
+      model: User,
+      select: "_id id name image"
+    })
+    .populate({
+      path: 'children',
+      populate: [
+        {
+          path: 'author',
+          model: User,
+          select: "_id id name parentId image",
+        },
+        {
+          path: 'children',
+          model: Thread,
+          populate: {
+           path: 'author',
+           model: User,
+           select: "_id id name parentId image",
+          }
+        }
+      ]
+    }).exec()
+    return thread
+
+  } catch (error: any) {
+    throw new Error(`Failed to fetch thread: ${error.message}`)
+  }
+}
