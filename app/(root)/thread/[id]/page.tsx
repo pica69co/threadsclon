@@ -1,4 +1,4 @@
-import ThreadCard from "@/components/cards/ThreadCards"
+ import ThreadCard from "@/components/cards/ThreadCards"
 import Comment from "@/components/forms/Comment"
 import { fetchThreadById } from "@/lib/actions/thread.actions"
 import { fetchUser } from "@/lib/actions/user.actions"
@@ -26,7 +26,7 @@ const page = async ({ params }: { params : { id: string }}) => {
             <ThreadCard 
               key={thread._id}
               id= {thread._id}
-              currentUserId={thread?.id || ''}
+              currentUserId={user?.id || ''}
               parentId={thread.parentId}
               content={thread.text}
               author={thread.author}
@@ -39,7 +39,7 @@ const page = async ({ params }: { params : { id: string }}) => {
         <div className="mt-7">
           <Comment 
             threadId={thread.id}
-            currentUserImg={user.image}
+            currentUserImg={userInfo.image}
             currentUserId={JSON.stringify(userInfo._id)}
 
           />
