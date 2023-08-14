@@ -1,29 +1,32 @@
 import mongoose from "mongoose";
 
 const threadSchema = new mongoose.Schema({
-  text: { type: String, required: true },
+  text: {
+    type: String,
+    required: true,
+  },
   author: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'user',
+    ref: "User",
     required: true,
   },
   community: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'community',
+    ref: "Community",
   },
   createdAt: {
     type: Date,
-    default: Date.now()
+    default: Date.now,
   },
-  parentId: { 
+  parentId: {
     type: String,
   },
-  children: [  //recursion: one thread have many threads.
+  children: [
     {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Thread'
-    }
-  ]
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Thread",
+    },
+  ],
 });
 
 const Thread = mongoose.models.Thread || mongoose.model("Thread", threadSchema);
