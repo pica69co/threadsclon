@@ -12,7 +12,7 @@ interface Props {
   members: {
     image: string;
   }[];
-}
+} 
 
 function CommunityCard({ id, name, username, imgUrl, bio, members }: Props) {
   return (
@@ -41,7 +41,7 @@ function CommunityCard({ id, name, username, imgUrl, bio, members }: Props) {
         <Link href={`/communities/${id}`}>
           <Button size='sm' className='community-card_btn'>
             View
-          </Button>
+           </Button>
         </Link>
 
         {members.length > 0 && (
