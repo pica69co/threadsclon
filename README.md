@@ -1,4 +1,4 @@
-## To develop Threads-clone, with Next.js 13 app. 
+## Develop Threads-clone, with Next.js 13 app. 
     ...
     Next.js 13.4 with Server Side Rendering
     Learning MongoDB handling of complex schemas, multiple data population
@@ -20,6 +20,24 @@
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
 ## Getting Started
+... 
+npm install
+
+...
+.env.local.example
+
+NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY=
+CLERK_SECRET_KEY=
+NEXT_PUBLIC_CLERK_SIGN_IN_URL=
+NEXT_PUBLIC_CLERK_SIGN_UP_URL=
+NEXT_PUBLIC_CLERK_AFTER_SIGN_IN_URL=
+NEXT_PUBLIC_CLERK_AFTER_SIGN_UP_URL=
+
+MONGODB_URL=
+
+UPLOADTHING_SECRET=
+UPLOADTHING_APP_ID=
+
 
 First, run the development server:
 
